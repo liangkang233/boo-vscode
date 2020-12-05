@@ -4,7 +4,10 @@ $(document).ready(function () {
     //     // socket.emit('table_event', { data: 'table' });
     //     socket.emit('client_event', { data:'' });
     // })
-
+    // user2sata();
+    // sata2ncc() ;
+    // ncc2sata();
+    // sata2user();
 
     // socket.on('table_response', function (msg){
     // 	console.log(msg);
@@ -14,29 +17,18 @@ $(document).ready(function () {
     var tmp = '';
     var table = [];     
     var log_num=0;  
-    var test_data_len=0;
-    // console.log(1)                            
+    // var test_data_len=0;                           
     socket.on('server_response', function (msg) {
         //  console.log(msg.data);
         if (msg.data.length != 0){
-            test_data_len+=msg.data.length;
-            console.log(test_data_len);
-            // len+=msg.data.length;
-            // console.log(len)
-            // localStorage.setItem("len",len.toString());
+            // test_data_len+=msg.data.length;
+            // console.log(test_data_len);
         for (var i=0;i<msg.data.length && Object.keys(msg.data[i]).length != 0 ;i++){ 
             // console.log( Object.prototype.toString.call(msg.data[i])) 
             //  if ( Object.keys(msg.data[i]).length != 0) {
             // change_tmp(msg.data[i])
             tmp=msg.data[i]
-
-            // $('#log').append('<br>' + $('<div/>').text('Received #' + ': ' + msg.data).html());
-            // $('#log').prepend('<br>' + $('<div/>').text('\n' + time +' #' + ': ' + tmp).html());
-
             obj = JSON.parse(msg.data[i])
-            // len+=obj.length;
-            // console.log(len)
-            // console.log(obj)
             //simple1 用户消息   simple2 NCC消息
             var simple1 = document.getElementById('simple1');
             var simpleResult1 = document.getElementById('simpleResult1');
@@ -45,15 +37,13 @@ $(document).ready(function () {
 
             time = fnDate();
 
-            if (obj.Options) { //收到用户信息
+            if (obj.Options) { 
+                //收到用户信息
+                user2sata()
                 var user = obj.PIDu.substring(0, 5) + "****";
-                simple1.innerHTML = "<h3>" + time + "</h3><br>接收到用户:<h3>" + user + "</h3>发起的身份认证请求\n";
-                simpleResult1.innerHTML = "<br><br>即将进行转发处理 </h6>";
-
+                simple1.innerHTML = "<h4>" + time + "</h4><br>接收到用户:<h4>" + user + "</h4>发起的身份认证请求\n";
+                simpleResult1.innerHTML = "<br><br>即将进行转发处理 </h3>";
                 $('#log').prepend('<br>' + $('<div/>').text('\n# ' + time + ' ---------- 接收到用户请求：\n' + tmp).html());
-               
-               
-
                 // setTable(user);
                 // console.log(table);
                 var status = '请求卫星';
@@ -61,89 +51,76 @@ $(document).ready(function () {
                 toTable = '<tr><td>' + user + '</td><td>' + time + '</td><td>' + status + '</td></tr>';
                 $('#table tbody').prepend(toTable);
                 showTable();
-                // user2sata();
+                user2sata();
                 // 接入用户总数加
                 updateUserCount(obj.conn_user, obj.succ_user);
-                // continue;
-                // qi 更新内存
-                // updateStorage(obj.storage);
             }
-         /*    else if (obj.userData) { //转发用户信息到ncc
+            else if (obj.userData) { //转发用户信息到ncc
+                sata2ncc()
                 var user = obj.userData.PIDu.substring(0, 5) + "****";
-                // simple1.innerHTML = "<h3>" + time + "</h3><br>正在转发用户:<h3>" + user + "</h3>认证请求\n";
-                // simpleResult1.innerHTML = "<br><br>正在进行转发处理 </h6>";
-
+                simple1.innerHTML = "<h4>" + time + "</h4><br>正在转发用户:<h4>" + user + "</h4>认证请求\n";
+                simpleResult1.innerHTML = "<br><br>正在进行转发处理 </h3>";
                 $('#log').prepend('<br>' + $('<div/>').text('\n# ' + time + ' ---------- 转发用户请求到NCC：\n' + tmp).html());
-
                 var status = '转发NCC';
-                // 获取table中的该user行，并将status修改
-                changeTable(user, status);
-                continue;
-                // sata2ncc();
+                changeTable(user, status)
 
-            } */
-
-            else if (obj.ReqAuth == "200") { //ncc回复卫星，用户认证成功
-                var user = obj.PIDu.substring(0, 5) + "****";
-                simple.innerHTML = "正在向NCC请求用户\n" + obj.PIDu + "<br>的身份信息\n";
-                simple1.innerHTML = "<h3>" + time + "</h3><br>用户:<h3>" + user + "</h3><font color='#FF0000'>认证成功</font>\n"
-                simpleResult1.innerHTML = "";
-                simple2.innerHTML = "</h3>用户:<h3>" + user + "</h3>身份信息合法\n";
-                // simpleResult2.innerHTML = "";
-            //    if( $('#log').val.length=0) { $('#log').append('<br>' + $('<div/>').text('\n# ' + time + ' ---------- 用户认证成功：\n' + tmp).html());}
-               $('#log').prepend('<br>' + $('<div/>').text('\n# ' + time + ' ---------- 用户认证成功：\n' + tmp).html());
-
-                log_num++;
-                // console.log(num)
-                if (log_num>500) {
-                      $("#log").empty() ; 
-                      log_num=0;  
-                    // document.getElementById("log").value="";     
-                }
-               
-                var status = '认证成功';
-                // 获取table中的该user行，并将status修改
-                changeTable(user, status);
-                // ncc2sata();
-
-                updateUserCountAndratio(obj.conn_user, obj.succ_user);
-                updateStorage(obj.storage);
-                // continue;
             }
-
-           /*  else if (obj.ReqAuth == "ReqUserInfo") { //向ncc请求用户身份
+            else if (obj.ReqAuth == "ReqUserInfo") { //向ncc请求用户身份
+                ncc2sata()
                 var user = obj.PIDu.substring(0, 5) + "****";
-                // simple2.innerHTML = "<h3>" + time + "</h3><br>NCC收到用户:<h3>" + user + "</h3>请求信息\n";
-                // simpleResult2.innerHTML = "<br>正在认证</h6>";
-
+                simple2.innerHTML = "<h4>" + time + "</h4><br>NCC收到用户:<h4>" + user + "</h4>请求信息\n";
+                simpleResult2.innerHTML = "<br><br>NCC正在认证</h3>";
                 $('#log').prepend('<br>' + $('<div/>').text('\n# ' + time + ' ---------- 向NCC请求用户信息：\n' + tmp).html());
-
                 var status = '请求用户';
                 // 获取table中的该user行，并将status修改
                 changeTable(user, status);
-                continue;
-            } */
-
+            }
+            else if (obj.ReqAuth == "200") { //ncc回复卫星，用户认证成功
+                sata2user() 
+                setTimeout(function () {
+                    clearLine();
+                }, 2000)  
+                var user = obj.PIDu.substring(0, 5) + "****";
+                // simple.innerHTML = "正在向NCC请求用户\n" + obj.PIDu + "<br>的身份信息\n";
+                simple1.innerHTML = "<h4>" + time + "</h4><br>用户:<h4>" + user + "</h4><font color='#FF0000'>认证成功</font>\n"
+                simpleResult1.innerHTML = "";
+                simple2.innerHTML = "";
+                simpleResult2.innerHTML = "";
+               $('#log').prepend('<br>' + $('<div/>').text('\n# ' + time + ' ---------- 用户认证成功：\n' + tmp).html());
+                log_num++;
+                if (log_num>500) {
+                      $("#log").empty() ; 
+                      log_num=0;     
+                }
+                var status = '认证成功';
+                // 获取table中的该user行，并将status修改
+                changeTable(user, status);
+                updateUserCountAndratio(obj.conn_user, obj.succ_user);
+                updateStorage(obj.storage);
+            }
+        
             //错误处理
             else if (obj.ReqAuth == "500") { //用户认证失败
+                sata2user() 
+                setTimeout(function () {
+                    clearLine();
+                }, 2000)  
                 var user = obj.PIDu.substring(0, 5) + "****";
-                // simple1.innerHTML = "<h3>" + time + "</h3><br>用户:<h3>" + user + "</h3><font color='#FF0000'>认证失败</font>";
-                // simpleResult1.innerHTML = "</h6>";
+                simple1.innerHTML = "<h4>" + time + "</h4><br>用户:<h4>" + user + "</h4><font color='#FF0000'>认证失败</font>";
+                simpleResult1.innerHTML = "";
+                simple2.innerHTML = "";
+                simpleResult2.innerHTML = "";
                 $('#log').prepend('<br>' + $('<div/>').text('\n # ' + time + ' ---------- 用户认证失败：\n' + tmp).html());
                 log_num++;
-                // console.log(num)
                 if (log_num>500) {
                       $("#log").empty()  ;  
-                      log_num=0; 
-                    // document.getElementById("log").value="";     
+                      log_num=0;      
                 }
                 var status = '认证失败';
                 // 获取table中的该user行，并将status修改
                 changeTable(user, status);
-                // clearLine();
-
                 updateUserCountAndratio(obj.conn_user, obj.succ_user);
-                // continue;
+                clearLine();     
             }
 
             // 用户发起图片请求
@@ -201,12 +178,9 @@ $(document).ready(function () {
                 $('#log').prepend('<br>' + $('<div/>').text('\n # ' + time + ' ---------- 用户二次认证失败：\n' + tmp).html());
                  sata2user();
             }
-  
-
-            // setTimeout(function () {
-            //     clearLine();
-            // }, 5000)  
-        // }
+            setTimeout(function () {
+                clearLine();
+            }, 5000)  
         }
          }
     
@@ -228,22 +202,22 @@ $(document).ready(function () {
         return num;
     }
     // 改变全局变量tmp的值
-    function change_tmp(data) {
-        $.ajax({
-            async: false,
-            success: function () {
-                tmp = data;
-            }
-        })
-    }
-    function setTable(data) {
-        $.ajax({
-            async: false,
-            success: function () {
-                table.push(data)
-            }
-        })
-    }
+    // function change_tmp(data) {
+    //     $.ajax({
+    //         async: false,
+    //         success: function () {
+    //             tmp = data;
+    //         }
+    //     })
+    // }
+    // function setTable(data) {
+    //     $.ajax({
+    //         async: false,
+    //         success: function () {
+    //             table.push(data)
+    //         }
+    //     })
+    // }
 
     function changeTable(user, status) {
         // var v = "";
@@ -296,7 +270,6 @@ function updateUserCountAndratio(conn_user, succ_user) {
 }
 // qi  占用内存更新
 function updateStorage(stor) {
-    // console.log(String(stor));
     document.getElementById("storage").innerHTML =String(stor)+" "+"MB";
 }
 
@@ -354,9 +327,6 @@ function sata2ncc() {
 function ncc2sata() {
     var svg = document.getElementById("svg_1");
     svg.appendChild(line4);
-    setTimeout(function () {
-        sata2user();
-    }, 2500)
 }
 // sata to user
 function sata2user() {

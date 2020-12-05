@@ -5,7 +5,7 @@ li{ list-style-type:none;}table{}i{ margin:0px; padding:0px; text-indent:0px;}im
 .mainbox>ul>li{ width: 30%}.mainbox>ul>li:nth-child(2){ width: 40%;padding: 0}
 .boxall{ display: table;width:100%;border: 1px solid rgba(25,186,139,.17); padding:0 .2rem .4rem 0rem;  background: rgba(255,255,255,.04) url(../images/line.png); background-size: 100% auto; position: relative; margin-bottom: .15rem; z-index: 10;}
 .boxall:before,.boxall:after{ position:absolute; width: .1rem; height: .1rem; content: "";  border-top: 2px solid #02a6b5; top: 0;}.boxall:before,.boxfoot:before{border-left: 2px solid #02a6b5;left: 0;}.boxall:after,.boxfoot:after{border-right: 2px solid #02a6b5; right: 0;}
-.alltitle{ font-size:.2rem; color:#fff; text-align: center; line-height: .5rem;}.boxfoot{ position:absolute; bottom: 0; width: 100%; left: 0;}.boxfoot:before,.boxfoot:after{ position:absolute; width: .1rem; height: .1rem;  content: "";border-bottom: 2px solid #02a6b5; bottom: 0;}
+.alltitle{ font-size:.3rem; color:#fff; text-align: center; line-height: .5rem;}.boxfoot{ position:absolute; bottom: 0; width: 100%; left: 0;}.boxfoot:before,.boxfoot:after{ position:absolute; width: .1rem; height: .1rem;  content: "";border-bottom: 2px solid #02a6b5; bottom: 0;}
 .bar{background:rgba(101,132,226,.1); padding: .15rem;}
 .barbox li,.barbox2 li{ width:33%; text-align: center; position: relative; z-index: 100;}
 .barbox:before,.barbox:after{ position:absolute; width: .3rem; height: .1rem; content: ""; }
