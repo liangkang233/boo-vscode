@@ -8,11 +8,10 @@
 ```
 
 2.环境包配置后运行报错
-File "E:\Task\satallite\venv\lib\site-packages\engineio\client.py", line 2, in <module>
-from json import JSONDecodeError
+File "E:\Task\satallite\venv\lib\site-packages\engineio\client.py", line 2, in module from json import JSONDecodeError,
 ImportError: cannot import name JSONDecodeError
 ```
-解决办法：虚拟环境中pip install simplejson,配置E:\Task\satallite\venv\lib\site-packages\engineio\client.py
+解决办法：虚拟环境中pip install simplejson,配置 E:\Task\satallite\venv\lib\site-packages\engineio\client.py
 from json import JSONDecodeError 中的json改为 simplejson
 ```
-3.venv虚拟环境压缩后[venv.7z](mydata\venv.7z)上传git，文件夹依旧不同步
+3.venv虚拟环境压缩后*venv.7z*(路径:mydata\venv.7z)上传git，文件夹依旧不同步
