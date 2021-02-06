@@ -1,7 +1,7 @@
 # 卫星导入数据可视化显示
 *原工程：https://gitee.com/wuqi_mata/satallite/tree/satallite*
 
-在前工程基础修改记录在[修改日志.md](mydata/requirements.txt)中，第三方依赖包记录于[requirements.txt](mydata/修改日志_lk.md),
+在前工程基础修改记录在[修改日志.md](mydata/修改日志_lk.md)中，第三方依赖包记录于[requirements.txt](mydata/requirements.txt),
 由于Python 2.7将于2020年1月1日后不再维护，python2也快走到头了，`且行且珍惜`。
 
 ## 1.pip命令由于不再维护无效时可以换镜像源解决： 
